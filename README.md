@@ -18,3 +18,7 @@ project run from main.py / main.ipynb
 - [ ] TODO 1
 - [ ] TODO 2
 - [ ] TODO 3
+
+
+video to use:
+https://github.com/opencv/opencv/blob/3.4/samples/data/vtest.avi
