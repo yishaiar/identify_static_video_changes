@@ -36,36 +36,41 @@ def saveYOLOv8Model(data_dir):
         print(f"Model weights saved to {save_path}")
     
     
-def loadYOLOv5Model(data_dir):
+# def loadYOLOv5Model(data_dir):
 
-    # Load the saved weights
-    save_path = f'{data_dir}/yolov5s_weights.pt'
-    model = load(save_path)
-    model.eval()  # Set the model to evaluation mode
-    print("Model weights loaded successfully")
-    return model
+#     # Load the saved weights
+#     save_path = f'{data_dir}/yolov5s_weights.pt'
+#     if not os.path.exists(save_path):
+#         saveYOLOv5Model(data_dir)
+#     model = load(save_path)
+#     model.eval()  # Set the model to evaluation mode
+#     print("Model  YOLO V5 weights loaded successfully")
+#     return model
 
 def loadYOLOv8Model(data_dir):
     # Load the saved model weights
     save_path = f'{data_dir}/yolov8s_weights.pt'
+    if not os.path.exists(save_path):
+        saveYOLOv8Model(data_dir)
     model = YOLO(save_path)
     model.eval()  # Set the model to evaluation mode
-    print("Model weights loaded successfully")
+    print("Model YOLO V8 weights loaded successfully")
     return model
 
-def loadModelYOLO(data_dir,model_version = 8):
-    # Load the saved model weights of yolo v8 or v5
+
+# def loadModelYOLO(data_dir,model_version = 8):
+#     # Load the saved model weights of yolo v8 or v5
     
-    try:
-        save_path = f'{data_dir}/yolov{model_version}s_weights.pt'
-        model = YOLO(save_path) if model_version==8 else load(save_path)
-        model.eval()  # Set the model to evaluation mode
-        print(F"Model YOLO V{model_version} weights loaded successfully")
-        return model
-    except:
-        print(f"error:Model YOLO V{model_version} weights not found in:")
-        print(save_path)
-        return saveYOLOv8Model(data_dir) if model_version==8 else  saveYOLOv5Model(data_dir)
+#     try:
+#         save_path = f'{data_dir}/yolov{model_version}s_weights.pt'
+#         model = YOLO(save_path) if model_version==8 else load(save_path)
+#         model.eval()  # Set the model to evaluation mode
+#         print(F"Model YOLO V{model_version} weights loaded successfully")
+#         return model
+#     except:
+#         print(f"error:Model YOLO V{model_version} weights not found in:")
+#         print(save_path)
+#         return saveYOLOv8Model(data_dir) if model_version==8 else  saveYOLOv5Model(data_dir)
 
 
 def inferenceYOLOv8Model(model,imgs):
@@ -93,6 +98,32 @@ def inferenceYOLOv8Model(model,imgs):
             })
     return all_results
 
+# def inferenceYOLOv5Model(model, imgs):
+#     # Initialize an empty list to store results
+#     all_results = []
+
+#     # Iterate through each image and extract results
+#     for img in imgs:
+#         results = model(img)  # Inference results for the image
+
+#         # Extract bounding boxes and other details from the results
+#         boxes = results.xyxy[0].cpu().numpy()  # Bounding box predictions (x1, y1, x2, y2)
+#         confs = results.conf[0].cpu().numpy()  # Confidence scores
+#         cls = results.cls[0].cpu().numpy()  # Class indices
+
+#         # Iterate through the detections and collect information
+#         for i in range(len(boxes)):
+#             all_results.append({
+#                 'confidence': confs[i],
+#                 'class': int(cls[i]),
+#                 'name': model.names[int(cls[i])],
+#                 'xmin': boxes[i][0],
+#                 'ymin': boxes[i][1],
+#                 'xmax': boxes[i][2],
+#                 'ymax': boxes[i][3]
+#             })
+
+#     return all_results
 
 
 def plotClassifcation(roi_coords,next_rgb,roi_detected ):
