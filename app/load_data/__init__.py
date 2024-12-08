@@ -35,7 +35,8 @@ def saveVideoFrames(video_path,save_path):
         # Save the frames as image files
         count+=1
         cv.imwrite(f'{save_path}\\{count}.png', frame_rgb)  
-    print(f'{count} Frames saved in {save_path}')
+    print(f'{count} Frames from video {video_path}')
+    print(f'Frames saved in {save_path}')
     
 def plotFrames(frame1, frame2,str1='Frame',str2='Base Model'):
     '''

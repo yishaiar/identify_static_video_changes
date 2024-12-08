@@ -16,6 +16,7 @@ def saveYOLOv5Model(data_dir):
         model = hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
         # Save model weights to a specific path
         save(model, save_path)
+        os.remove('yolov5s.pt')
         print(f"Model weights saved to {save_path}")
     
 
@@ -51,6 +52,20 @@ def loadYOLOv8Model(data_dir):
     model.eval()  # Set the model to evaluation mode
     print("Model weights loaded successfully")
     return model
+
+def loadModelYOLO(data_dir,model_version = 8):
+    # Load the saved model weights of yolo v8 or v5
+    
+    try:
+        save_path = f'{data_dir}/yolov{model_version}s_weights.pt'
+        model = YOLO(save_path) if model_version==8 else load(save_path)
+        model.eval()  # Set the model to evaluation mode
+        print(F"Model YOLO V{model_version} weights loaded successfully")
+        return model
+    except:
+        print(f"error:Model YOLO V{model_version} weights not found in:")
+        print(save_path)
+        return saveYOLOv8Model(data_dir) if model_version==8 else  saveYOLOv5Model(data_dir)
 
 
 def inferenceYOLOv8Model(model,imgs):
