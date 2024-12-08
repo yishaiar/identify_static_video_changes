@@ -130,6 +130,9 @@ def plotWithROIs(roi_coords,baseModel_rgb, next_rgb, OpticalFlow_rgb = None ):
     plt.show()
     
 def plotCrop(cropped_regions):
+    if len(cropped_regions)==0:
+        print('no cropped regions (list is empty)')
+        return
     
     fig, axes = plt.subplots(len(cropped_regions), 1, figsize=(5, int(len(cropped_regions)*3)))
 

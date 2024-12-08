@@ -5,9 +5,14 @@ import matplotlib.pyplot as plt
 import os
 
 def loadFrame( save_path="frame1.png"):
-
-
-    # Load the images back using matplotlib and convert them to uint8
+    '''
+    Load images from file using matplotlib and convert them into range [0,255] using uint8
+    
+    Args:
+        save_path (str): The path to the image file.
+    Returns:
+        np.array: The loaded image in RGB format with range [0, 255].
+    '''
     frame_rgb = plt.imread(save_path)
     if np.max(frame_rgb) <= 1:# if the image is in the range [0,1]
         frame_rgb = (frame_rgb*255).astype(np.uint8)
@@ -16,7 +21,38 @@ def loadFrame( save_path="frame1.png"):
 
 
 
-def saveVideoFrames(video_path,save_path):
+
+def pixelize_frame(frame, resolution_decrease=10):
+    """
+    Pixelizes a given frame by resizing it to a lower resolution and then resizing it back.
+    
+    Args:
+        frame (np.array): The input video frame to pixelize. an rgb image with range [0,255]
+        pixel_size (int): The size of the "pixels" in the pixelized output.
+    
+    Returns:
+        np.array: The pixelized video frame. an rgb image with range [0,255]
+    """
+    # Get the current frame size
+    height, width = frame.shape[:2]
+    
+    # Resize the frame to a smaller resolution to simulate the low-res camera
+    small_frame = cv.resize(frame, (width // resolution_decrease, height // resolution_decrease), interpolation=cv.INTER_LINEAR)
+    
+    # Resize back to the original size to get the pixelated effect
+    pixelized_frame = cv.resize(small_frame, (width, height), interpolation=cv.INTER_NEAREST)
+    return pixelized_frame
+
+def saveVideoFrames(video_path,save_path,pixelize = False,resolution_decrease = 10):
+    """
+    Saves frames from a video as images, with an option to pixelize them.
+    
+    Args:
+        video_path (str): The path to the input video file.
+        save_path (str): The path to save the extracted frames.
+        pixelize (bool): Whether to apply the pixelization effect.
+        resolution_decrease (int): The amount by which resolution is decreased if pixelization is applied.
+    """
     # Open the video file
     cap = cv.VideoCapture(cv.samples.findFile(video_path))
     if not os.path.exists(save_path):
@@ -30,11 +66,18 @@ def saveVideoFrames(video_path,save_path):
         if not ret:
             cap.release()
             break
+        
+        # Optionally apply pixelization
+        if pixelize:
+            frame = pixelize_frame(frame, resolution_decrease)
         # Convert the frame to RGB
         frame_rgb = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
         # Save the frames as image files
         count+=1
-        cv.imwrite(f'{save_path}\\{count}.png', frame_rgb)  
+        cv.imwrite(f'{save_path}\\{count}.png', frame_rgb)
+        
+        if count>10:
+            break  
     print(f'{count} Frames from video {video_path}')
     print(f'Frames saved in {save_path}')
     

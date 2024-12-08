@@ -2,7 +2,7 @@ import numpy as np
 import cv2 as cv
 # import matplotlib.pyplot as plt
 
-def opticalFlow(baseModel, next):
+def opticalFlow(baseModel, next,magnitude_thresholding = True):
     '''
     input:  prvs - grayscale frame 1, range [0, 255]
             next - grayscale frame 2, range [0, 255]
@@ -16,19 +16,17 @@ def opticalFlow(baseModel, next):
     mag, ang = cv.cartToPolar(flow[..., 0], flow[..., 1])
     
     
-#   ------------------------------------------------
-    # Apply magnitude thresholding
-    mag_threshold=(0.5, 10.0)
-    min_thresh, max_thresh = mag_threshold
-    valid_mask = (mag > min_thresh) & (mag < max_thresh)
+    if magnitude_thresholding:
+        mag_threshold=(0.5, 10.0)
+        min_thresh, max_thresh = mag_threshold
+        valid_mask = (mag > min_thresh) & (mag < max_thresh)
 
-    # Mask the flow based on the threshold
-    flow[..., 0] = flow[..., 0] * valid_mask
-    flow[..., 1] = flow[..., 1] * valid_mask
-    mag = mag * valid_mask
-    ang = ang * valid_mask
+        # Mask the flow based on the threshold
+        flow[..., 0] = flow[..., 0] * valid_mask
+        flow[..., 1] = flow[..., 1] * valid_mask
+        mag = mag * valid_mask
+        ang = ang * valid_mask
 
-#     ---------------------------------------
 
     # Visualize the flow in HSV format
     hsv = np.zeros((baseModel.shape[0], baseModel.shape[1], 3),dtype='uint8')

@@ -53,7 +53,7 @@ def loadYOLOv8Model(data_dir):
     if not os.path.exists(save_path):
         saveYOLOv8Model(data_dir)
     model = YOLO(save_path)
-    model.eval()  # Set the model to evaluation mode
+    # model.eval()  # Set the model to evaluation mode
     print("Model YOLO V8 weights loaded successfully")
     return model
 
