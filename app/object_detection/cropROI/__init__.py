@@ -138,10 +138,11 @@ def plotCrop(cropped_regions):
 
     # Plot cropped regions
     for idx, cropped in enumerate(cropped_regions):
+        axs = axes if len(cropped_regions) == 1 else axes[idx]
         
-        axes[idx].imshow(cropped)
-        axes[idx].set_title(f'Cropped Region {idx + 1}')
-        axes[idx].axis('off')
+        axs.imshow(cropped)
+        axs.set_title(f'Cropped Region {idx + 1}')
+        axs.axis('off')
     
     # Show the plot
     plt.tight_layout()

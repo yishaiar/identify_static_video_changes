@@ -3,7 +3,7 @@
 
 ```python
 # some python code for reference..
-project run from main.py / main.ipynb
+project run from run_video.ipynb
 
 
 
@@ -15,10 +15,6 @@ project run from main.py / main.ipynb
     ```
 
 ## 📋 TODOs
-- [ ] TODO 1
-- [ ] TODO 2
-- [ ] TODO 3
-
-
-video to use:
-https://github.com/opencv/opencv/blob/3.4/samples/data/vtest.avi
+- save video  into ./data
+- change video_fname in run_video.ipynb
+- example vide: https://github.com/opencv/opencv/blob/3.4/samples/data/vtest.avi

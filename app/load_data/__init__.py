@@ -73,11 +73,12 @@ def saveVideoFrames(video_path,save_path,pixelize = False,resolution_decrease = 
         # Convert the frame to RGB
         frame_rgb = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
         # Save the frames as image files
-        count+=1
-        cv.imwrite(f'{save_path}\\{count}.png', frame_rgb)
         
-        if count>10:
-            break  
+        cv.imwrite(f'{save_path}\\{count}.png', frame_rgb)
+        count+=1
+        
+        # if count>10:
+        #     break  
     print(f'{count} Frames from video {video_path}')
     print(f'Frames saved in {save_path}')
     

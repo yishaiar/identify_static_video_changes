@@ -6,6 +6,7 @@ import matplotlib.patches as patches
 import numpy as np
 
 
+
 def saveYOLOv5Model(data_dir):
     # Save model weights to a specific path
     save_path = f'{data_dir}/yolov5s_weights.pt'
@@ -79,7 +80,7 @@ def inferenceYOLOv8Model(model,imgs):
 
     # Iterate through each image and extract results
     for img in imgs:
-        results = model(img)  # Inference results for the image
+        results = model(img, verbose=False)  # Inference results for the image
         
         # Extract bounding boxes and other details
         boxes = results[0].boxes  # Bounding box predictions for the first image
@@ -96,6 +97,8 @@ def inferenceYOLOv8Model(model,imgs):
                 'class': int(boxes.cls[i].cpu().numpy()),
                 'name': model.names[int(boxes.cls[i].cpu().numpy())]
             })
+        if len(boxes) == 0: #if no object detected in the image
+            all_results.append({'confidence': None, 'class': None, 'name': None})
     return all_results
 
 # def inferenceYOLOv5Model(model, imgs):
@@ -126,7 +129,7 @@ def inferenceYOLOv8Model(model,imgs):
 #     return all_results
 
 
-def plotClassifcation(roi_coords,next_rgb,roi_detected ):
+def plotClassifcation(roi_coords,next_rgb,roi_detected,frame_num = '' ):
     '''
     input:  prvs_rgb - frame 1 in RGB format, range [0, 255]
             next_rgb - frame 2 in RGB format, range [0, 255]
@@ -134,7 +137,7 @@ def plotClassifcation(roi_coords,next_rgb,roi_detected ):
             OpticalFlow_gray - optical flow visualization in grayscale format, range [0, 255]
             roi_coords - List of tuples containing (y1, x1, y2, x2) coordinates for each detected ROI
             cropped_regions - List of cropped images corresponding to each detected region
-    output: None
+    output: figure
     '''
 
     
@@ -142,7 +145,7 @@ def plotClassifcation(roi_coords,next_rgb,roi_detected ):
     
 
     imgs = [next_rgb ]
-    titles = ['Frame'] 
+    titles = [f'Frame{frame_num}'] 
 
     # Create a figure with multiple subplots for each ROI
     fig, axes = plt.subplots(len(imgs), len(imgs), figsize=(15, 5))
@@ -160,7 +163,6 @@ def plotClassifcation(roi_coords,next_rgb,roi_detected ):
             y1, x1, y2, x2 = coords
             rect = patches.Rectangle((x1, y1), x2 - x1, y2 - y1, linewidth=2, edgecolor='g', facecolor='none')
             axs.add_patch(rect)  # Adding rectangle to OpticalFlow image
-            confidence = str(np.round(roi_detected[idx]['confidence'],2))
+            confidence = None if not roi_detected[idx]['confidence'] else str(np.round(roi_detected[idx]['confidence'],2))#none if yolo didnt detect anything in ROI
             axs.text(x1, y1+0.1, f"{roi_detected[idx]['name']}, {confidence}", fontsize=15, color='b', weight='bold')
     plt.tight_layout()
-    plt.show()
