@@ -10,3 +10,14 @@ ultralytics
 setuptools>=70.0.0
 gitpython>=3.1.30
 nbformat
+
+
+ipywidgets 
+widgetsnbextension 
+# pandas-profiling
+
+torch
+# pretrained models:
+torchvision
+# unet model:
+segmentation-models-pytorch

@@ -10,7 +10,14 @@ def opticalFlow(baseModel, next,magnitude_thresholding = True):
             OpticalFlow_gray - optical flow visualization in grayscale format, range [0, 255]
     '''
     
-    # Compute optical flow between the prvs and next frames
+    # Compute optical flow between the prvs and next frames; prvs and next are grayscale frames
+#     there are two types of optical flow:
+
+#     1. Lucas-Kanade Optical Flow - Sparse Optical Flow (Estimates motion for a few points in the frame); Less sensitive to noise
+#     prev_pts = cv2.goodFeaturesToTrack(prev_gray, maxCorners=100, qualityLevel=0.3, minDistance=7)
+#     curr_pts, status, err = cv2.calcOpticalFlowPyrLK(prev_gray, curr_gray, prev_pts, None)
+
+#     2. Farneback Optical Flow - Dense Optical Flow (Estimates motion for every pixel in the frame); Sensitive to noise in low-resolution videos
     flow = cv.calcOpticalFlowFarneback(baseModel, next, flow=None, pyr_scale=0.5, levels=3, winsize=15, iterations=3, poly_n=5, poly_sigma=1.2, flags=0)
     # Convert the flow to magnitude and angle
     mag, ang = cv.cartToPolar(flow[..., 0], flow[..., 1])
