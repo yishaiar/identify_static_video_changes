@@ -1,5 +1,6 @@
-# Name this repo!
-[Description goes here]
+# identify_static_video_changes
+detecting sudden change in a static video scene
+
 
 ```python
 # some python code for reference..
@@ -17,4 +18,4 @@ project run from run_video.ipynb
 ## 📋 TODOs
 - save video  into ./data
 - change video_fname in run_video.ipynb
-- example vide: https://github.com/opencv/opencv/blob/3.4/samples/data/vtest.avi
+- example video: https://github.com/opencv/opencv/blob/3.4/samples/data/vtest.avi
